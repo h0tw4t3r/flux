@@ -58,40 +58,40 @@ jobs:
     - name: Checkout PR
       uses: actions/checkout@v2
         
+    - name: Debug
+      run: |
+        echo $PWD
+        ls -a
+
     - name: Check if base artifact exists
       uses: xSAVIKx/artifact-exists-action@v0
       id: check_artifact
       with:
         name: 'base'
 
-    - name: Download base stats
-      if: steps.check_artifact.outputs.exists == 'true'
-      uses: actions/download-artifact@v2
-      with:
-        name: base
-        path: base
+    - name: Debug
+      run: |
+        echo $PWD
+        ls -a
 
-    - name: Download base stats
+    - name: Download stats
       if: steps.check_artifact.outputs.exists == 'true'
       uses: actions/download-artifact@v2
       with:
-        name: base
-        path: base
+        path: artifacts
 
-    - name: Download PR stats
-      if: steps.check_artifact.outputs.exists == 'true'
-      uses: actions/download-artifact@v2
-      with:
-        name: pr
-        path: p
+    - name: Debug
+      run: |
+        echo $PWD
+        tree artifacts
         
     - name: Get diff
       if: steps.check_artifact.outputs.exists == 'true'
       id: get-diff
       uses: NejcZdovc/bundle-size-diff@v1
       with:
-        base_path: './base/stats.json'
-        pr_path: './pr/stats.json'
+        base_path: './artifacts/base/stats.json'
+        pr_path: './artifacts/pr/stats.json'
 
     - name: Comment
       if: steps.check_artifact.outputs.exists == 'true'
